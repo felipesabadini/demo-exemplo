@@ -32,9 +32,9 @@ services:
     environment:
       PUBLISH_PORT: 9419
       RABBIT_CAPABILITIES: bert,no_sort
-      RABBIT_USER: storage
-      RABBIT_PASSWORD: storage
-      RABBIT_URL: http://mom-rabbit:15672
+      RABBIT_USER: fsabadini
+      RABBIT_PASSWORD: fsabadini
+      RABBIT_URL: http://rabbit:15672
     links:
       - rabbit
 

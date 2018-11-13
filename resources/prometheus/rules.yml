@@ -1,14 +1,14 @@
 groups:
   - name: example
     rules:
-      - alert: HighErrorRate
-        expr: rabbitmq_queue_messages_ready{durable="true",policy="",queue="messages",vhost="/"} == 8
+      - alert: 5 Messagens
+        expr: rabbitmq_queue_messages_ready{durable="true",policy="",queue="messages",vhost="/"} == 5
         labels:
           severity: critical
           action: upQueue
         annotations:
           summary: Escala 1 quando o tamanho da fila chegar a 5
-      - alert: LowErrorRate
+      - alert: 0 Mensaggens
         expr: rabbitmq_queue_messages_ready{durable="true",policy="",queue="messages",vhost="/"} == 0
         labels:
           severity: critical

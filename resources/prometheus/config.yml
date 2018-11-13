@@ -15,11 +15,11 @@ route:
 receivers:
   - name: "webhook-receiver-up"
     webhook_configs:
-      - url:
+      - url: http://localhost:2583
         send_resolved: true
   - name: "webhook-receiver-down"
     webhook_configs:
-    - url:
+    - url: http://localhost:2583
       send_resolved: true
 
 
