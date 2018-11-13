@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>fsabadini.exempo</groupId>
+    <artifactId>demo</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+
+        <!-- Docker -->
+        <mb-docker.repository>felipesabadini</mb-docker.repository>
+
+        <mb-docker-image.configuracao>demo-exemplo-configuracao</mb-docker-image.configuracao>
+        <mb-docker-image.produtor>demo-exemplo-produtor</mb-docker-image.produtor>
+        <mb-docker-image.consumidor>demo-exemplo-consumidor</mb-docker-image.consumidor>
+        <!-- /Docker -->
+
+        <!-- Dependencies -->
+        <spring-boot.version>2.0.4.RELEASE</spring-boot.version>
+        <spring-boot-admin.version>2.0.2</spring-boot-admin.version>
+        <spring-cloud.version>Finchley.SR1</spring-cloud.version>
+        <lombok.version>1.18.2</lombok.version>
+        <org.apache.httpcomponents.httpclient.version>4.5.6</org.apache.httpcomponents.httpclient.version>
+        <org.springframework.version>5.0.8.RELEASE</org.springframework.version>
+        <commons-io.version>2.6</commons-io.version>
+        <com.amazonaws.aws-java-sdk.version>1.11.397</com.amazonaws.aws-java-sdk.version>
+        <com.squareup.okhttp3.okhttp.version>3.11.0</com.squareup.okhttp3.okhttp.version>
+        <caffeine.version>2.6.2</caffeine.version>
+        <freemarker.version>2.3.28</freemarker.version>
+        <!-- /Dependencies -->
+
+        <!-- Plugins -->
+        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+        <dockerfile-maven-plugin.version>1.4.4</dockerfile-maven-plugin.version>
+        <maven-compiler-plugins.version>3.8.0</maven-compiler-plugins.version>
+        <!-- /Plugins -->
+    </properties>
+
+    <modules>
+        <module>produtor</module>
+        <module>configuracao</module>
+        <module>consumidor</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <type>pom</type>
+                <version>${spring-boot.version}</version>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugins.version}</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>docker-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/docker</directory>
+                                    <filtering>false</filtering>
+                                    <excludes>
+                                        <exclude>**/*.yml</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

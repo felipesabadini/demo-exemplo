@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/felipesabadini/demo-exemplo.git
+          search-paths: resources/properties
+          force-pull: true
+          clone-on-start: true

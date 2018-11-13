@@ -1,0 +1,13 @@
+server:
+  port: 11000
+  servlet:
+    context-path: /configuracao
+spring:
+  application:
+    name: configuracao
+  profiles:
+    active: native, desenvolvimento
+  security:
+    user:
+      name: configuracao
+      password: 707B6F537570002C4693DC51FD1A69AD51355F4AC1AED94C2F6975DDD2E30D97

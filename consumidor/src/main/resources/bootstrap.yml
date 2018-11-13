@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: consumidor
+  profiles:
+    active: desenvolvimento
+  cloud:
+    config:
+      username: configuracao
+      password: 707B6F537570002C4693DC51FD1A69AD51355F4AC1AED94C2F6975DDD2E30D97
+queue:
+  messages: messages
+---
+spring:
+  profiles: desenvolvimento
+  cloud:
+    config:
+      uri: http://127.0.0.1:11000/configuracao
+      fail-fast: true
+---
+spring:
+  profiles: docker
+  cloud:
+    config:
+      uri: http://configuracao:11000/configuracao
+      fail-fast: true

@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+  rabbit:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+      - 9419:9419
+    environment:
+      RABBITMQ_DEFAULT_USER: fsabadini
+      RABBITMQ_DEFAULT_PASS: fsabadini
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ../../resources/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ../../resources/prometheus/alert.rules:/alertmanager/alert.rules
+      - ../../resources/prometheus/rules.yml:/alertmanager/rules.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    links:
+      - rabbitmq-exporter
+      - prometheus-alertmanager
+
+  rabbitmq-exporter:
+    image: kbudde/rabbitmq-exporter
+    ports:
+      - 9999:9419
+    environment:
+      PUBLISH_PORT: 9419
+      RABBIT_CAPABILITIES: bert,no_sort
+      RABBIT_USER: storage
+      RABBIT_PASSWORD: storage
+      RABBIT_URL: http://mom-rabbit:15672
+    links:
+      - rabbit
+
+  prometheus-alertmanager:
+    image: prom/alertmanager
+    privileged: true
+    volumes:
+      - ../../resources/prometheus/config.yml:/alertmanager.yml
+    command:
+      - '--config.file=/alertmanager.yml'
+    ports:
+      - 9093:9093
+
+  configuracao:
+    image: felipesabadini/demo-exemplo-configuracao
+    ports:
+      - 11000:11000
+    environment:
+      SPRING_PROFILES_ACTIVE: native, docker
+    volumes:
+      - ../../resources/properties:/root/properties
+
+  produtor:
+    image: felipesabadini/demo-exemplo-produtor
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_PROFILES_ACTIVE: native, docker
+
+  consumidor:
+    image: felipesabadini/demo-exemplo-consumidor
+    environment:
+      SPRING_PROFILES_ACTIVE: docker

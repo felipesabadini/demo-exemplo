@@ -1,0 +1,6 @@
+spring:
+  rabbitmq:
+    addresses: rabbit
+    port: 5672
+    username: fsabadini
+    password: fsabadini
